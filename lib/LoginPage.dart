@@ -18,7 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   bool _isObscure = true;
   bool _isLoading = false;
 
-  final String apiUrl = 'http://192.168.100.231:3001';
+  final String apiUrl = 'http://192.168.30.185:3001';
 
   @override
   void dispose() {
@@ -46,7 +46,13 @@ class _LoginPageState extends State<LoginPage> {
         if (response.statusCode == 200) {
           // Parse JSON response
           final Map<String, dynamic> data = json.decode(response.body);
-          final user = data['user']; // Lấy thông tin user
+          final user = data['user'];
+
+          // Add admin check here
+          if (_usernameController.text.toLowerCase() != 'admin') {
+            throw Exception('Chỉ tài khoản admin mới được truy cập');
+          }
+
           showDialog(
             barrierDismissible: false,
             context: context,
